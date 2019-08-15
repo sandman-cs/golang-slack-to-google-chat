@@ -80,6 +80,15 @@ func getUserFromMessage(msg string) (result string) {
 	//return result
 }
 
+func getSendingUserFromMessage(msg string) string {
+
+	log.Println("Message to get user from: ", msg)
+
+	temp := msg[10:19]
+	log.Println("UserID: ", temp)
+	return temp
+}
+
 func getUserNameFromID(rtm *slack.RTM, usr string) (result string) {
 
 	user, err := rtm.GetUserInfo(usr)

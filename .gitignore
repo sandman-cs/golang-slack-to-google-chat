@@ -4,6 +4,7 @@
 *.dll
 *.so
 *.dylib
+golang-slack-to-google.*
 
 # Test binary, build with `go test -c`
 *.test

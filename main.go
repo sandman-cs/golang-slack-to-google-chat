@@ -24,10 +24,13 @@ Loop:
 
 				posted := false
 
-				for index, element := range conf.Channels {
-					if ev.Channel == element.SlackChannelID || channel == element.SlackChannelName {
-						messages[index] <- replaceUserIDWithName(rtm, ev.Msg.Text)
-						posted = true
+				if user != "unknown" {
+
+					for index, element := range conf.Channels {
+						if ev.Channel == element.SlackChannelID || channel == element.SlackChannelName {
+							messages[index] <- fmt.Sprintf("*%s:*\n%s", user, replaceUserIDWithName(rtm, ev.Msg.Text))
+							posted = true
+						}
 					}
 				}
 
