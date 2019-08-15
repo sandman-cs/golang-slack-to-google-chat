@@ -2,7 +2,6 @@
 Slack bot that listens for messages on Slack and posts them to a Google Chat Room.
 
 Sample Config:
-
 `
 {
     "Channels": [{
