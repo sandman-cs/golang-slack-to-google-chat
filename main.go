@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 
 	slack "github.com/nlopes/slack"
 )
@@ -13,26 +12,30 @@ Loop:
 	for {
 		select {
 		case msg := <-rtm.IncomingEvents:
-			//fmt.Print("\nEvent Received: ")
 			switch ev := msg.Data.(type) {
 			case *slack.ConnectedEvent:
 				fmt.Println("Connection counter:", ev.ConnectionCount)
 
 			case *slack.MessageEvent:
 				fmt.Printf("Message: %v\n", ev)
-				//info := rtm.GetInfo()
-				//prefix := fmt.Sprintf("<@%s> ", info.User.ID)
 
 				user := getUserNameFromID(rtm, ev.User)
 				channel := getChannelNameFromID(rtm, ev.Channel)
 
-				log.Printf("[DEBUG] received message from %s (%s) on (%s)\n", user, ev.User, channel)
-				log.Printf("[DEBUG] containing: (%s)\n", ev.Msg.Text)
-				sendToChat(replaceUserIDWithName(rtm, ev.Msg.Text))
+				posted := false
 
-				//if strings.Contains(ev.Msg.Text, prefix) {
-				//	log.Println("This message was sent to me :-)")
-				//}
+				for index, element := range conf.Channels {
+					if ev.Channel == element.SlackChannelID || channel == element.SlackChannelName {
+						messages[index] <- replaceUserIDWithName(rtm, ev.Msg.Text)
+						posted = true
+					}
+				}
+
+				if !posted {
+					logMessage("Message did not match a config entry:")
+					logMessage(fmt.Sprintf(" %s (%s) on %s (%s)\n", user, ev.User, channel, ev.Channel))
+					logMessage(fmt.Sprintf("[DEBUG] containing: (%s)\n", ev.Msg.Text))
+				}
 
 			case *slack.RTMError:
 				fmt.Printf("Error: %s\n", ev.Error())

@@ -12,8 +12,12 @@ func CheckError(err error) {
 }
 
 //FailOnError - fail on error
-func FailOnError(err error, msg string) {
+func failOnError(err error, msg string) {
 	if err != nil {
 		log.Fatalln("Fatal Error", msg, err)
 	}
+}
+
+func logMessage(msg string) {
+	log.Println(msg)
 }

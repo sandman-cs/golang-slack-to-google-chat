@@ -3,17 +3,18 @@ package main
 import (
 	"encoding/json"
 	"io/ioutil"
+	"log"
 	"os"
 
 	slack "github.com/nlopes/slack"
 )
 
 var (
-	token string
-	api   *slack.Client
-	rtm   *slack.RTM
-	url   string
-	conf  configuration
+	token    string
+	api      *slack.Client
+	rtm      *slack.RTM
+	conf     configuration
+	messages [255]chan string
 )
 
 func init() {
@@ -33,7 +34,19 @@ func init() {
 	rtm = api.NewRTM()
 	go rtm.ManageConnection()
 
-	//Google Variables
-	url = conf.Channels[0].ChatURL
+	//New Launch Code Here....
+
+	if len(conf.Channels) > 0 {
+		//Keep this part, spawn all the cool new stuff...............................
+		for index, element := range conf.Channels {
+			// Create Channel and launch publish threads.......
+			log.Println("Creating Channel #", index)
+			messages[index] = make(chan string, 128)
+			//Spawn Sending threads
+			go sendChatMessage(element.ChatURL, messages[index])
+		}
+	} else {
+		log.Fatalln("No Channels Configured...")
+	}
 
 }
