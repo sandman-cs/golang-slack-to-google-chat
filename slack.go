@@ -80,6 +80,11 @@ func getUserFromMessage(msg string) (result string) {
 	//return result
 }
 
+func getImageFromMessage(rtm *slack.RTM, msg string) {
+	//1565941947.083900
+
+}
+
 func getSendingUserFromMessage(msg string) string {
 
 	log.Println("Message to get user from: ", msg)
