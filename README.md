@@ -2,7 +2,7 @@
 Slack bot that listens for messages on Slack and posts them to a Google Chat Room.
 
 Sample Config:
-`
+```
 {
     "Channels": [{
         "SlackChannelName":"test-channel1",
@@ -15,5 +15,5 @@ Sample Config:
         "ChatURL":"https://chat.googleapis.com/v1/spaces/????"
     "SlackToken":"Put your slack bot user token here"
 }
-`
+```
 
