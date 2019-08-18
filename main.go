@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 
 	slack "github.com/nlopes/slack"
@@ -28,8 +29,17 @@ Loop:
 
 					for index, element := range conf.Channels {
 						if ev.Channel == element.SlackChannelID || channel == element.SlackChannelName {
-							messages[index] <- fmt.Sprintf("*%s:*\n%s", user, replaceUserIDWithName(rtm, ev.Msg.Text))
+							buf := bytes.Buffer{}
+
+							buf.WriteString(replaceUserIDWithName(rtm, ev.Msg.Text))
+							messages[index] <- fmt.Sprintf("*%s:*\n%s", user, buf.String())
 							posted = true
+							fileList := ev.Msg.Files
+							for _, element := range fileList {
+								imageMessages[index] <- imagePost{element.Thumb480, element.URLDownload}
+							}
+							//messages[index] <- fmt.Sprintf("*%s:*\n%s", user, buf.String())
+							//posted = true
 						}
 					}
 				}
