@@ -34,6 +34,7 @@ Loop:
 							buf.WriteString(replaceUserIDWithName(rtm, ev.Msg.Text))
 							messages[index] <- fmt.Sprintf("*%s:*\n%s", user, buf.String())
 							posted = true
+
 							fileList := ev.Msg.Files
 							for _, element := range fileList {
 								imageMessages[index] <- imagePost{element.Thumb480, element.URLDownload}
