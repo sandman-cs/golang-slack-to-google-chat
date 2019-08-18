@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"time"
@@ -40,13 +39,14 @@ func sendChatMessage(url string, input chan string) {
 		fmt.Println("response Status:", resp.Status)
 
 		//Need to remove this for PROD, only log for errors!!!!!!
-		fmt.Println("response Headers:", resp.Header)
+		/*fmt.Println("response Headers:", resp.Header)
 
 		body, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
 			log.Fatal("Error reading body. ", err)
 		}
 		fmt.Printf("%s\n", body)
+		*/
 	}
 }
 
@@ -60,6 +60,8 @@ func sendChatCard(url string, input chan imagePost) {
 		msg := <-input
 
 		log.Println("Function called to send image...")
+		log.Println(msg.imageLink)
+		log.Println(msg.imageURL)
 
 		data := []byte(part1 + msg.imageLink + part2 + msg.imageURL + part3)
 
@@ -86,13 +88,5 @@ func sendChatCard(url string, input chan imagePost) {
 
 		fmt.Println("response Status:", resp.Status)
 
-		//Need to remove this for PROD, only log for errors!!!!!!
-		fmt.Println("response Headers:", resp.Header)
-
-		body, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			log.Fatal("Error reading body. ", err)
-		}
-		fmt.Printf("%s\n", body)
 	}
 }

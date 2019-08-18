@@ -18,7 +18,8 @@ Loop:
 				fmt.Println("Connection counter:", ev.ConnectionCount)
 
 			case *slack.MessageEvent:
-				fmt.Printf("Message: %v\n", ev)
+				//Remove for PROD, for debug only.....
+				//fmt.Printf("Message: %v\n", ev)
 
 				user := getUserNameFromID(rtm, ev.User)
 				channel := getChannelNameFromID(rtm, ev.Channel)
@@ -29,20 +30,19 @@ Loop:
 
 					for index, element := range conf.Channels {
 						if ev.Channel == element.SlackChannelID || channel == element.SlackChannelName {
+
 							buf := bytes.Buffer{}
 
 							buf.WriteString(replaceUserIDWithName(rtm, ev.Msg.Text))
-							messages[index] <- fmt.Sprintf("*%s:*\n%s", user, buf.String())
-							posted = true
-
 							fileList := ev.Msg.Files
 							for _, element := range fileList {
-								imageMessages[index] <- imagePost{element.Thumb480, element.URLDownload}
+								buf.WriteString("\n" + element.Thumb64)
 							}
-							//messages[index] <- fmt.Sprintf("*%s:*\n%s", user, buf.String())
-							//posted = true
+							messages[index] <- fmt.Sprintf("*%s:*\n%s", user, buf.String())
+							posted = true
 						}
 					}
+
 				}
 
 				if !posted {
