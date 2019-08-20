@@ -19,7 +19,9 @@ Loop:
 				fmt.Println("Connection counter:", ev.ConnectionCount)
 
 			case *slack.MessageEvent:
-				fmt.Printf("Message: %v\n", ev)
+				res2B, _ := json.Marshal(ev)
+				logMessage(fmt.Sprintf("[DEBUG] containing: %s\n", string(res2B)))
+				//fmt.Printf("Message: %v\n", ev)
 
 				user := getUserNameFromID(rtm, ev.User)
 				channel := getChannelNameFromID(rtm, ev.Channel)
@@ -48,8 +50,8 @@ Loop:
 				if !posted {
 					logMessage("Message did not match a config entry:")
 					logMessage(fmt.Sprintf(" %s (%s) on %s (%s)\n", user, ev.User, channel, ev.Channel))
-					res2B, _ := json.Marshal(ev)
-					logMessage(fmt.Sprintf("[DEBUG] containing: %s\n", string(res2B)))
+					//res2B, _ := json.Marshal(ev)
+					//logMessage(fmt.Sprintf("[DEBUG] containing: %s\n", string(res2B)))
 					//logMessage(fmt.Sprintf("[DEBUG] containing: (%+v)\n", ev))
 				}
 
