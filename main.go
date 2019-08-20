@@ -25,7 +25,7 @@ Loop:
 				channel := getChannelNameFromID(rtm, ev.Channel)
 				posted := false
 
-				getImageFromMessage(rtm, "https://files.slack.com/files-pri/T034AG6NF-FMKC3QMU7/download/image.png")
+				//getImageFromMessage(rtm, "https://files.slack.com/files-pri/T034AG6NF-FMKC3QMU7/download/image.png")
 
 				if user != "unknown" {
 
