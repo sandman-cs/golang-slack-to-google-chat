@@ -9,6 +9,8 @@ import (
 	"time"
 )
 
+// threadKey=ARBITRARY_STRING
+
 func sendChatMessage(url string, input chan string) {
 
 	for {

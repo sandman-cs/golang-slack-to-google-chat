@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 
 	slack "github.com/nlopes/slack"
@@ -24,6 +25,8 @@ Loop:
 				channel := getChannelNameFromID(rtm, ev.Channel)
 				posted := false
 
+				getImageFromMessage(rtm, "https://files.slack.com/files-pri/T034AG6NF-FMKC3QMU7/download/image.png")
+
 				if user != "unknown" {
 
 					for index, element := range conf.Channels {
@@ -45,7 +48,9 @@ Loop:
 				if !posted {
 					logMessage("Message did not match a config entry:")
 					logMessage(fmt.Sprintf(" %s (%s) on %s (%s)\n", user, ev.User, channel, ev.Channel))
-					logMessage(fmt.Sprintf("[DEBUG] containing: (%s)\n", ev.Msg.Text))
+					res2B, _ := json.Marshal(ev)
+					logMessage(fmt.Sprintf("[DEBUG] containing: %s\n", string(res2B)))
+					//logMessage(fmt.Sprintf("[DEBUG] containing: (%+v)\n", ev))
 				}
 
 			case *slack.RTMError:

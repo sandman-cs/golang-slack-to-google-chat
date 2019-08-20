@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 	"strings"
 
 	slack "github.com/nlopes/slack"
@@ -80,8 +81,16 @@ func getUserFromMessage(msg string) (result string) {
 	//return result
 }
 
-func getImageFromMessage(rtm *slack.RTM, msg string) {
-	//1565941947.083900
+func getImageFromMessage(rtm *slack.RTM, url string) string {
+
+	f, err := os.Create("image.png")
+	if err != nil {
+		return "error.png"
+	}
+
+	defer f.Close()
+	rtm.GetFile(url, f)
+	return "image.png"
 
 }
 

@@ -14,3 +14,7 @@ golang-slack-to-google.*
 
 # Configuration files
 *.json
+
+# Image files
+*.png 
+
