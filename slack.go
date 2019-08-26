@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 	"strings"
+	"time"
 
 	slack "github.com/nlopes/slack"
 )
@@ -83,9 +85,11 @@ func getUserFromMessage(msg string) (result string) {
 
 func getImageFromMessage(rtm *slack.RTM, url string) string {
 
-	f, err := os.Create("image.png")
+	szFileName := strconv.FormatInt(time.Now().UTC().UnixNano(), 10)
+	szFile := conf.ImagePath + szFileName + ".png"
+	f, err := os.Create(szFile)
 	if err != nil {
-		return "error.png"
+		return szFileName
 	}
 
 	defer f.Close()
