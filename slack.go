@@ -94,7 +94,7 @@ func getImageFromMessage(rtm *slack.RTM, url string) string {
 
 	defer f.Close()
 	rtm.GetFile(url, f)
-	return "image.png"
+	return szFileName + ".png"
 
 }
 
