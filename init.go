@@ -10,11 +10,13 @@ import (
 )
 
 var (
-	token    string
-	api      *slack.Client
-	rtm      *slack.RTM
-	conf     configuration
-	messages [255]chan string
+	token         string
+	api           *slack.Client
+	rtm           *slack.RTM
+	conf          configuration
+	messages      [255]chan string
+	imageMessages [255]chan imagePost
+	threadKey     string
 )
 
 func init() {
@@ -42,8 +44,10 @@ func init() {
 			// Create Channel and launch publish threads.......
 			log.Println("Creating Channel #", index)
 			messages[index] = make(chan string, 128)
+			imageMessages[index] = make(chan imagePost, 128)
 			//Spawn Sending threads
 			go sendChatMessage(element.ChatURL, messages[index])
+			go sendChatCard(element.ChatURL, imageMessages[index])
 		}
 	} else {
 		log.Fatalln("No Channels Configured...")

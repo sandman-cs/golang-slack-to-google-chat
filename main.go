@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"strconv"
+	"time"
 
 	slack "github.com/nlopes/slack"
 )
@@ -21,7 +23,6 @@ Loop:
 			case *slack.MessageEvent:
 				res2B, _ := json.Marshal(ev)
 				logMessage(fmt.Sprintf("[DEBUG] containing: %s\n", string(res2B)))
-				//fmt.Printf("Message: %v\n", ev)
 
 				user := getUserNameFromID(rtm, ev.User)
 				channel := getChannelNameFromID(rtm, ev.Channel)
@@ -35,12 +36,15 @@ Loop:
 							buf := bytes.Buffer{}
 
 							buf.WriteString(replaceUserIDWithName(rtm, ev.Msg.Text))
-							fileList := ev.Msg.Files
-							for _, element := range fileList {
-								getImageFromMessage(rtm, element.Thumb480)
-							}
+							threadKey = strconv.FormatInt(time.Now().UTC().UnixNano(), 10)
 							messages[index] <- fmt.Sprintf("*%s:*\n%s", user, buf.String())
 							posted = true
+							fileList := ev.Msg.Files
+							for _, element := range fileList {
+								szTemp := getImageFromMessage(rtm, element.Thumb480)
+								imageMessages[index] <- imagePost{conf.ImageURL + szTemp, conf.ImageURL + szTemp}
+							}
+
 						}
 					}
 				}
