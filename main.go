@@ -41,7 +41,7 @@ Loop:
 							posted = true
 							fileList := ev.Msg.Files
 							for _, element := range fileList {
-								szTemp := getImageFromMessage(rtm, element.Thumb480)
+								szTemp := getImageFromMessage(rtm, element.Thumb1024)
 								imageMessages[index] <- imagePost{conf.ImageURL + szTemp, conf.ImageURL + szTemp}
 							}
 
