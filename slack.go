@@ -83,7 +83,19 @@ func getUserFromMessage(msg string) (result string) {
 	//return result
 }
 
-func getImageFromMessage(rtm *slack.RTM, url string) string {
+func getImageFromMessage(rtm *slack.RTM, element slack.File) string {
+
+	var url string
+
+	if len(element.Thumb1024) > 10 {
+		url = element.Thumb1024
+	} else if len(element.Thumb480) > 10 {
+		url = element.Thumb480
+	} else if len(element.Thumb360) > 10 {
+		url = element.Thumb360
+	} else {
+		url = element.Thumb160
+	}
 
 	szFileName := strconv.FormatInt(time.Now().UTC().UnixNano(), 10)
 	szFile := conf.ImagePath + szFileName + ".png"
